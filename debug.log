@@ -1,0 +1,5 @@
+[0830/123444.913:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[0830/164324.635:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[0831/163519.556:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0831/164519.569:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0831/164519.569:ERROR:crash_report_database_win.cc(428)] unexpected header

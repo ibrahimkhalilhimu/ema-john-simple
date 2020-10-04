@@ -8,7 +8,7 @@ import { initializeLoginFrameWork, handleGoogleSignIn, handleSignOut, createUser
 function Login() {
   const [newUser,setNewUser] = useState(false)
   const [user,setUser] =useState({
-    isSignIn: false,
+    isSignedIn: false,
     name:'',
     email:'',
     password:''
@@ -96,14 +96,14 @@ event.preventDefault();
   return (
     <div style={{textAlign:'center'}}>
      {
-      user.isSignIn ?  <button onClick={signOut}>Sign out</button> :
+      user.isSignedIn ?  <button onClick={signOut}>Sign out</button> :
 
       <button onClick={googleSignIn}>Sign In</button>
       
       }
       <br/>
       <button>Log In Facebook</button>
-    {user.isSignIn &&<div>
+    {user.isSignedIn &&<div>
     <p>Welcome To {user.name}</p>
     <p>YOUR Email:{user.email}</p>
     </div>

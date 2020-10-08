@@ -8,7 +8,7 @@ import { initializeLoginFrameWork, handleGoogleSignIn, handleSignOut, createUser
 function Login() {
   const [newUser,setNewUser] = useState(false)
   const [user,setUser] =useState({
-    isSignedIn: false,
+    isSignedIn:false,
     name:'',
     email:'',
     password:''

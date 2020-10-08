@@ -20,6 +20,9 @@ export const handleGoogleSignIn =()=>{
         success:true
      
       }
+    
+      setUserToken()
+
       return signInUser;
 
       console.log(displayName,email)
@@ -43,11 +46,23 @@ export const handleGoogleSignIn =()=>{
         success:false
 
       }
+      
       return singOutUser;
     })
     .catch(err=>{
       console.log(err)
     })
+  }
+
+
+  const setUserToken =()=>{
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+      sessionStorage.setItem('token',idToken)
+      // Send token to your backend via HTTPS
+      // ...
+    }).catch(function(error) {
+      // Handle error
+    });
   }
 
   export const createUserWithEmailAndPassword = (name ,email,password)=>{

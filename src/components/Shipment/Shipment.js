@@ -1,17 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import { useForm } from 'react-hook-form';
 import './Shipment.css'
 import { UserContext } from '../../App';
 import { getDatabaseCart, processOrder } from '../../utilities/databaseManager';
+import ProcessPayment from '../ProcessPayment/ProcessPayment';
 
 const Shipment = () => {
     const { register, handleSubmit, watch, errors } = useForm();
 const [loggedInUser,setLoggedInUser] = useContext(UserContext)
+const [shippingData,setShippingData] = useState(null)
 
     const onSubmit = data =>{
-     const savedCart = getDatabaseCart();
-      const orderDetails = {...loggedInUser,products: savedCart, shipment:data, orderTime: new Date()}
-      fetch('http://localhost:5000/addOrder',{
+      setShippingData(data)
+    } 
+
+    const handlePaymentSuccess = paymentId =>{
+      const savedCart = getDatabaseCart();
+      const orderDetails = {
+        ...loggedInUser,
+        products: savedCart,
+         shipment:shippingData,
+         paymentId,
+         orderTime: new Date()
+        }
+      fetch('https://agile-basin-17492.herokuapp.com/addOrder',{
         method:'POST',
         headers:{ 
             'Content-Type':'application/json'
@@ -25,13 +37,13 @@ const [loggedInUser,setLoggedInUser] = useContext(UserContext)
         alert('your order place successfully')
       }
     })
-    } 
-
+    }
 
     console.log(watch("example")); // watch input value by passing the name of it
     return (
-      
-      <form className="ship-from" onSubmit={handleSubmit(onSubmit)}>
+      <div className="row">
+        <div style={{display:shippingData ? 'none': 'block'}} className="col-md-6">
+        <form className="ship-from" onSubmit={handleSubmit(onSubmit)}>
         <input name="name" defaultValue={loggedInUser.name} ref={register({ required: true })} placeholder="Your Name" />
         {errors.name && <span className="error"> Name is required</span>} 
         <input name="email"  defaultValue={loggedInUser.email} ref={register({ required: true })} placeholder="Your Email" />
@@ -40,6 +52,13 @@ const [loggedInUser,setLoggedInUser] = useContext(UserContext)
         {errors.address && <span className="error"> Address is required</span>}
         <input type="submit" />
       </form>
+        </div>
+        <div style={{display:shippingData ? 'block': 'none'}} className="col-md-6">
+          <h1>Pay</h1>
+          <ProcessPayment handlePayment={handlePaymentSuccess}></ProcessPayment>
+        </div>
+      </div>
+      
     );
     }
 
